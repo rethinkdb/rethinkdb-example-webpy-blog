@@ -1,9 +1,9 @@
 # What is it #
 
-The [web.py](http://webpy.org/) really basic [blog example](http://webpy.org/src/blog/0.3) 
-that uses RethinkDB as the backend database.
+The [web.py](http://webpy.org/) (really basic) [blog example](http://webpy.org/src/blog/0.3) 
+using RethinkDB as the backend database.
 
-This example application shows how to perform basic CRUD operations with RethinkDB:
+This example application shows how to perform simple CRUD operations with RethinkDB:
 
 *   create a new post
 *   list blog posts (ordered by timestamp)
@@ -47,7 +47,7 @@ Then open a browser: <http://localhost:3000>.
 
 # Annotated Source Code #
 
-After checking out the code, you can also read the annotated source [here](http://www.rethinkdb.com/docs/examples/webpy-blog/)
+After checking out the code, you can also read the annotated source [here](http://www.rethinkdb.com/docs/examples/webpy-blog/).
 
 # License #
 

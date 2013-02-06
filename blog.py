@@ -1,6 +1,8 @@
 """ Basic blog using webpy 0.3 """
-import time
+import argparse, time
+
 import web
+
 import model
 
 ### Url mappings
@@ -13,15 +15,6 @@ urls = (
     '/edit/(.+)', 'Edit',
 )
 
-def timestr(epoch):
-    return time.strftime('%a, %b.%d %H:%M', time.localtime(epoch))
-
-### Templates
-t_globals = {
-    'datestr': web.datestr,
-    'timestr': timestr
-}
-render = web.template.render('templates', base='base', globals=t_globals)
 
 
 class Index:
@@ -89,9 +82,29 @@ class Edit:
         raise web.seeother('/')
 
 
+def timestr(epoch):
+    """
+    Helper function for :mod:`time` display
+    """
+    return time.strftime('%a, %b.%d %H:%M', time.localtime(epoch))
+
+### Templates
+t_globals = {
+    'datestr': web.datestr,
+    'timestr': timestr
+}
+render = web.template.render('templates', base='base', globals=t_globals)
+
+
+
 app = web.application(urls, globals())
 
-if __name__ == '__main__':
-    import logging, sys
-    logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-    app.run()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Run the web.py blog app')
+    parser.add_argument('--setup', dest='run_setup', action='store_true')
+
+    args = parser.parse_args()
+    if args.run_setup:
+        model.dbSetup()
+    else:
+        app.run()    

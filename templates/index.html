@@ -1,0 +1,14 @@
+$def with (posts)
+
+<h1>Blog posts</h1>
+
+<ul>
+$for post in posts:
+    <li>
+        <p><a href="/view/$post['id']">$post['title']</a></p>
+        <p>
+          <em>Posted: $timestr(post['posted_at']) (last updated: $timestr(post['last_modified']))</em> 
+          <a href="/edit/$post['id']">Edit</a>
+        </p>
+    </li>
+</ul>

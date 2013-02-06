@@ -1,0 +1,8 @@
+$def with (post)
+
+<h1>$post['title']</h1>
+<p class="byline">Posted: $timestr(post['posted_at'])</p>
+
+<div id="body">
+$post['content']
+</div>

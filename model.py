@@ -1,5 +1,5 @@
-# The [web.py](http://webpy.org/) really basic [blog example](http://webpy.org/src/blog/0.3) 
-# showing how to use **RethinkDB as the backend for web.py applications**.
+# The [web.py](http://webpy.org/) (really basic) [blog example](http://webpy.org/src/blog/0.3) 
+# using **RethinkDB as the backend for web.py applications**.
 #
 # For details about the complete stack, installation, and running the app see
 # the [README](https://github.com/rethinkdb/rethinkdb-example-webpy-blog).
@@ -23,13 +23,13 @@ RDB_CONFIG = {
 }
 
 
-# We define a :func:`@contextmanager` for 
-# the RethinkDB connection.
+# We define a [context manager](http://docs.python.org/2/library/stdtypes.html#typecontextmanager)
+# for the RethinkDB connection.
 @contextmanager
 def connection():
   conn = None
   try:
-    # Connect to the specified RethinkDB database
+    # Connect to a specific RethinkDB database
     conn = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'], db_name=RDB_CONFIG['db'])
     yield conn
   except socket.error, err:
@@ -52,7 +52,7 @@ def connection():
 # data from the server in efficient batches.
 def get_posts():
   with connection() as conn:
-    return conn.run(r.table(RDB_CONFIG['table']).order_by(r.desc('posted_at')))
+    return r.table(RDB_CONFIG['table']).order_by(r.desc('posted_at')).run(conn)
 
 #### Creating a new post
 
@@ -98,8 +98,7 @@ def get_post(id):
 # have been updated.
 def update_post(id, title, text):
   with connection() as conn:
-    result = r.table(RDB_CONFIG['table']) \
-      .get(id) \
+    result = r.table(RDB_CONFIG['table']).get(id) \
       .update({'title': title, 'content': text, 'last_modified': time.time()}) \
       .run(conn)
     return result.get('modified', 0) == 1
@@ -118,12 +117,18 @@ def del_post(id):
     return result.get('deleted', 0) == 1
 
 
+#### Database setup
 
-# The app will use a table `todos` in the database specified by the
-# `TODO_DB` variable.  We'll create the database and table here using
+
+# The app will use a table `blogposts` in the database `webpy`. 
+# You can override these defaults by defining the `RDB_DB` and `RDB_TABLE`
+# env variables.
+# 
+# We'll create the database and table here using
 # [`db_create`](http://www.rethinkdb.com/api/#py:manipulating_databases-db_create)
 # and
-# [`table_create`](http://www.rethinkdb.com/api/#py:manipulating_tables-table_create) commands.
+# [`table_create`](http://www.rethinkdb.com/api/#py:manipulating_tables-table_create) 
+# commands.
 def dbSetup():
     connection = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'])
     try:

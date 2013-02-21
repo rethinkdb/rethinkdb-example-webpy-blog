@@ -42,11 +42,11 @@ def connection():
 
 #### Listing existing posts
 
-# To retrieve all existing tasks, we are using
+# To retrieve all existing tasks, we are using the
 # [`r.table`](http://www.rethinkdb.com/api/#py:selecting_data-table)
 # command to query the database in response to a GET request from the
 # browser. We also [`order_by`](http://www.rethinkdb.com/api/#py:transformations-orderby)
-# `posted_at` attribute descendingly.
+# the `posted_at` attribute in a descending manner.
 #    
 # Running the query returns an iterator that automatically streams
 # data from the server in efficient batches.
@@ -91,8 +91,8 @@ def get_post(id):
 
 # To update the post we'll use the 
 # [`update`](http://www.rethinkdb.com/api/#py:writing_data-update)
-# which will merge the JSON object stored in the database with the new
-# one.
+# command, which will merge the JSON object stored in the database with the
+# new one.
 #
 # The `update` operation returns an object specifying how many rows
 # have been updated.
@@ -120,7 +120,7 @@ def del_post(id):
 #### Database setup
 
 
-# The app will use a table `blogposts` in the database `webpy`. 
+# The app will use the table `blogposts` in the database `webpy`. 
 # You can override these defaults by defining the `RDB_DB` and `RDB_TABLE`
 # env variables.
 # 

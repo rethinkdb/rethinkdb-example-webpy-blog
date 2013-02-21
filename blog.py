@@ -96,8 +96,11 @@ t_globals = {
 render = web.template.render('templates', base='base', globals=t_globals)
 
 
+class BlogApplication(web.application):
+    def run(self, port=3000, *middleware):
+        func = self.wsgifunc(*middleware)
+        return web.httpserver.runsimple(func, ('0.0.0.0', port))
 
-app = web.application(urls, globals())
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run the web.py blog app')
@@ -107,4 +110,6 @@ if __name__ == "__main__":
     if args.run_setup:
         model.dbSetup()
     else:
-        app.run()    
+        app = BlogApplication(urls, globals())
+        app.run()
+

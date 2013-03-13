@@ -9,7 +9,7 @@ import web
 
 from contextlib import contextmanager
 
-from rethinkdb import r
+import rethinkdb as r
 
 #### Connection details
 

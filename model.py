@@ -10,6 +10,7 @@ import web
 from contextlib import contextmanager
 
 import rethinkdb as r
+from rethinkdb.errors import RqlRuntimeError
 
 #### Connection details
 
@@ -30,7 +31,7 @@ def connection():
   conn = None
   try:
     # Connect to a specific RethinkDB database
-    conn = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'], db_name=RDB_CONFIG['db'])
+    conn = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'], db=RDB_CONFIG['db'])
     yield conn
   except socket.error, err:
     msg = "Couldn't connect to RethinkDB on host:%s, port:%s" % (RDB_CONFIG['host'], RDB_CONFIG['port'])
@@ -132,10 +133,10 @@ def del_post(id):
 def dbSetup():
     connection = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'])
     try:
-        connection.run(r.db_create(RDB_CONFIG['db']))
-        connection.run(r.db(RDB_CONFIG['db']).table_create(RDB_CONFIG['table']))
+        r.db_create(RDB_CONFIG['db']).run(connection)
+        r.db(RDB_CONFIG['db']).table_create(RDB_CONFIG['table']).run(connection)
         print 'Database setup completed. Now run the app without --setup.'
-    except Exception:
+    except RqlRuntimeError:
         print 'App database already exists. Run the app like this: `python blog.py`'
     finally:
         connection.close()

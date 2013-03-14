@@ -24,22 +24,11 @@ RDB_CONFIG = {
 }
 
 
-# We define a [context manager](http://docs.python.org/2/library/stdtypes.html#typecontextmanager)
-# for the RethinkDB connection.
-@contextmanager
+# The `Connection` object returned by [`r.connect`](http://www.rethinkdb.com/api/#py:accessing_rql-connect) 
+# is a [context manager](http://docs.python.org/2/library/stdtypes.html#typecontextmanager)
+# that can be used with the `with` statements.
 def connection():
-  conn = None
-  try:
-    # Connect to a specific RethinkDB database
-    conn = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'], db=RDB_CONFIG['db'])
-    yield conn
-  except socket.error, err:
-    msg = "Couldn't connect to RethinkDB on host:%s, port:%s" % (RDB_CONFIG['host'], RDB_CONFIG['port'])
-    print >> sys.stderr, msg
-    raise EnvironmentError(msg)
-  finally:
-    if conn:
-      conn.close()
+  return r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'], db=RDB_CONFIG['db'])
 
 #### Listing existing posts
 

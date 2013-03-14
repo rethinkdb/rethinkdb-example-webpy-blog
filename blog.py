@@ -97,7 +97,7 @@ render = web.template.render('templates', base='base', globals=t_globals)
 
 
 class BlogApplication(web.application):
-    def run(self, port=3000, *middleware):
+    def run(self, port=5000, *middleware):
         func = self.wsgifunc(*middleware)
         return web.httpserver.runsimple(func, ('0.0.0.0', port))
 

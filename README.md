@@ -42,7 +42,7 @@ Now you can run the application:
 python blog.py
 ```
 
-Then open a browser: <http://localhost:3000>.
+Then open a browser: <http://localhost:5000>.
 
 
 # Annotated Source Code #

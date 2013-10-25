@@ -24,7 +24,7 @@ RDB_CONFIG = {
 }
 
 
-# The `Connection` object returned by [`r.connect`](http://www.rethinkdb.com/api/#py:accessing_rql-connect) 
+# The `Connection` object returned by [`r.connect`](http://www.rethinkdb.com/api/python/connect/) 
 # is a [context manager](http://docs.python.org/2/library/stdtypes.html#typecontextmanager)
 # that can be used with the `with` statements.
 def connection():
@@ -33,9 +33,9 @@ def connection():
 #### Listing existing posts
 
 # To retrieve all existing tasks, we are using the
-# [`r.table`](http://www.rethinkdb.com/api/#py:selecting_data-table)
+# [`r.table`](http://www.rethinkdb.com/api/python/table/)
 # command to query the database in response to a GET request from the
-# browser. We also [`order_by`](http://www.rethinkdb.com/api/#py:transformations-orderby)
+# browser. We also [`order_by`](http://www.rethinkdb.com/api/python/order_by/)
 # the `posted_at` attribute in a descending manner.
 #    
 # Running the query returns an iterator that automatically streams
@@ -47,7 +47,7 @@ def get_posts():
 #### Creating a new post
 
 # We create a new blog entry using
-# [`insert`](http://www.rethinkdb.com/api/#py:writing_data-insert).
+# [`insert`](http://www.rethinkdb.com/api/python/insert/).
 #
 # The `insert` operation returns a single object specifying the number
 # of successfully created objects and their corresponding IDs:
@@ -71,7 +71,7 @@ def new_post(title, text):
 # Every new post gets assigned a unique ID. The browser can retrieve
 # a specific task by GETing `/view/<post_id>`. To query the database
 # for a single document by its ID, we use the
-# [`get`](http://www.rethinkdb.com/api/#py:selecting_data-get)
+# [`get`](http://www.rethinkdb.com/api/python/get/)
 # command.
 def get_post(id):
   with connection() as conn:
@@ -80,7 +80,7 @@ def get_post(id):
 #### Updating a post
 
 # To update the post we'll use the 
-# [`update`](http://www.rethinkdb.com/api/#py:writing_data-update)
+# [`update`](http://www.rethinkdb.com/api/python/update/)
 # command, which will merge the JSON object stored in the database with the
 # new one.
 #
@@ -96,7 +96,7 @@ def update_post(id, title, text):
 #### Deleting a post
 
 # To delete a post we'll call a
-# [`delete`](http://www.rethinkdb.com/api/#py:writing_data-delete)
+# [`delete`](http://www.rethinkdb.com/api/python/delete/)
 # command.
 #
 # The `delete` operation returns an object specifying how many
@@ -115,9 +115,9 @@ def del_post(id):
 # env variables.
 # 
 # We'll create the database and table here using
-# [`db_create`](http://www.rethinkdb.com/api/#py:manipulating_databases-db_create)
+# [`db_create`](http://www.rethinkdb.com/api/python/db_create/)
 # and
-# [`table_create`](http://www.rethinkdb.com/api/#py:manipulating_tables-table_create) 
+# [`table_create`](http://www.rethinkdb.com/api/python/table_create/) 
 # commands.
 def dbSetup():
     connection = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'])
@@ -152,8 +152,8 @@ def dbSetup():
 #    
 # #### `update` vs `replace` ####
 #
-# Both [`update`](http://www.rethinkdb.com/api/#py:writing_data-update) and 
-# [`replace`](http://www.rethinkdb.com/api/#py:writing_data-replace) 
+# Both [`update`](http://www.rethinkdb.com/api/python/update/) and 
+# [`replace`](http://www.rethinkdb.com/api/python/replace/) 
 # operations can be used to modify one or multiple rows. Their behavior is different:
 #    
 # *   `update` will merge existing rows with the new values

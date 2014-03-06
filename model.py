@@ -51,7 +51,16 @@ def get_posts():
 #
 # The `insert` operation returns a single object specifying the number
 # of successfully created objects and their corresponding IDs:
-# `{ "inserted": 1, "errors": 0, "generated_keys": ["b3426201-9992-4a21-ab84-974603657671"] }`
+#
+# ```
+# {
+#   "inserted": 1,
+#   "errors": 0,
+#   "generated_keys": [
+#     "b3426201-9992-4a21-ab84-974603657671"
+#   ]
+# }
+# ```
 def new_post(title, text):
   new_post = {'title': title, 
     'content': text, 

@@ -28,7 +28,8 @@ RDB_CONFIG = {
 # is a [context manager](http://docs.python.org/2/library/stdtypes.html#typecontextmanager)
 # that can be used with the `with` statements.
 def connection():
-  return r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'], db=RDB_CONFIG['db'])
+  return r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'],
+                   db=RDB_CONFIG['db'])
 
 #### Listing existing posts
 
@@ -42,7 +43,8 @@ def connection():
 # data from the server in efficient batches.
 def get_posts():
   with connection() as conn:
-    return r.table(RDB_CONFIG['table']).order_by(r.desc('posted_at')).run(conn)
+    return (r.table(RDB_CONFIG['table'])
+             .order_by(r.desc('posted_at')).run(conn))
 
 #### Creating a new post
 
@@ -97,9 +99,10 @@ def get_post(id):
 # have been updated.
 def update_post(id, title, text):
   with connection() as conn:
-    result = r.table(RDB_CONFIG['table']).get(id) \
-      .update({'title': title, 'content': text, 'last_modified': time.time()}) \
-      .run(conn)
+    result = (r.table(RDB_CONFIG['table']).get(id)
+               .update({'title': title, 'content': text,
+                        'last_modified': time.time()})
+               .run(conn))
     return result.get('modified', 0) == 1
 
 #### Deleting a post
@@ -129,15 +132,16 @@ def del_post(id):
 # [`table_create`](http://www.rethinkdb.com/api/python/table_create/) 
 # commands.
 def dbSetup():
-    connection = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'])
+    conn = r.connect(host=RDB_CONFIG['host'], port=RDB_CONFIG['port'])
     try:
-        r.db_create(RDB_CONFIG['db']).run(connection)
-        r.db(RDB_CONFIG['db']).table_create(RDB_CONFIG['table']).run(connection)
+        r.db_create(RDB_CONFIG['db']).run(conn)
+        r.db(RDB_CONFIG['db']).table_create(RDB_CONFIG['table']).run(conn)
         print 'Database setup completed. Now run the app without --setup.'
     except RqlRuntimeError:
-        print 'App database already exists. Run the app like this: `python blog.py`'
+        print ('App database already exists. Run the app like this: ',
+               'python blog.py')
     finally:
-        connection.close()
+        conn.close()
 
 
 # ### Best practices ###
